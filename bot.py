@@ -422,7 +422,7 @@ async def profile(message: Message):
         f"🎂 <b>Дата народження:</b> {birth_date}\n\n"
 
         "━━━━━━━━━━━━━━━━━━━━\n"
-        f"⭐ <b>Бонусний баланс:</b> {bonus_balance}\n"
+    
         "💳 <b>Статус картки:</b> 🟢 Активна\n"
         "━━━━━━━━━━━━━━━━━━━━",
         parse_mode="HTML"
