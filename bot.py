@@ -80,6 +80,17 @@ main_keyboard = ReplyKeyboardMarkup(
         [
             KeyboardButton(text="🧾 Додати чек"),
             KeyboardButton(text="👤 Мій профіль")
+        ]
+    ],
+    resize_keyboard=True
+)
+
+
+admin_keyboard = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="🧾 Додати чек"),
+            KeyboardButton(text="👤 Мій профіль")
         ],
         [
             KeyboardButton(text="📊 Експорт Excel")
@@ -110,22 +121,27 @@ async def start(message: Message, state: FSMContext):
 
     if await user_exists(message.from_user.id):
 
-        await message.answer(
-            "👋 <b>Вітаємо знову!</b>\n\n"
-            "Ви вже зареєстровані у програмі лояльності ❤️\n\n"
-            "Оберіть потрібну дію:",
-            parse_mode="HTML",
-            reply_markup=main_keyboard
-        )
-        return
-
     await message.answer(
-        "🏡 <b>Ласкаво просимо до магазину «Домовичок»!</b>\n\n"
-        "💚 Ми раді вітати Вас у нашій програмі лояльності.\n\n"
-        "Натисніть кнопку <b>«🚀 Розпочати»</b>, щоб пройти реєстрацію.",
+        "👋 <b>Вітаємо знову!</b>\n\n"
+        "Ви вже зареєстровані у програмі лояльності ❤️\n\n"
+        "Оберіть потрібну дію:",
         parse_mode="HTML",
-        reply_markup=start_keyboard
+        reply_markup=(
+            admin_keyboard
+            if message.from_user.id in ADMIN_IDS
+            else main_keyboard
+        )
     )
+    return
+
+
+await message.answer(
+    "🏡 <b>Ласкаво просимо до магазину «Домовичок»!</b>\n\n"
+    "💚 Ми раді вітати Вас у нашій програмі лояльності.\n\n"
+    "Натисніть кнопку <b>«🚀 Розпочати»</b>, щоб пройти реєстрацію.",
+    parse_mode="HTML",
+    reply_markup=start_keyboard
+)
 
 
 @dp.message(F.text == "🚀 Розпочати")
